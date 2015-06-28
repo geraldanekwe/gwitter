@@ -1,0 +1,17 @@
+<h1>Welcome {{loggedUser.username}} !</h1>
+<form class="navbar-form navbar-left" ng-submit="addGweet()">
+  <div class="form-group">
+    <textarea ng-model="gweet" rows="5" placeholder="gweet here..." required></textarea>
+  </div>
+  <div>
+    <span ng-class="{ warning: isGweetMaxed() }"> {{remainingChar()}} characters
+  </span>
+    <button id="gweet-btn" type="submit" ng-disabled="isGweetMaxed()" class="btn btn-default">gweet</button>
+  </div>
+  <br>
+</form>
+<div class="gweets" ng-repeat="obj in gweetArr.slice().reverse()">
+  <p><span id="username-gweetbox">{{obj.username}}:</span>
+    <div id="gweet-gweetbox"> {{obj.gweet}}</div>
+  </p>
+</div>
