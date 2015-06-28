@@ -3,6 +3,7 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     $scope.afAuth.$onAuth(function(data) {
       if (data) {
         $rootScope.activeUser = data;
+        $rootScope.uid = data.uid;
         $rootScope.fbUser = $rootScope.fbRef.child('users/' + data.uid);
         $rootScope.fbUser.set({
           email: data.github.email,
@@ -53,7 +54,8 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
       $rootScope.fbGweets = $rootScope.fbRef.child('gweets/' + $scope.gweetObj.username);
       $scope.gweets.$add({
         username: currentUser,
-        gweet: $scope.gweetObj.gweet
+        gweet: $scope.gweetObj.gweet,
+        id: $rootScope.uid
       });
       $scope.gweet = "";
     }
