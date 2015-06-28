@@ -32,11 +32,13 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     $scope.gweetArr = [];
     $scope.gweetObj = {};
     var currentUser = $rootScope.loggedUser.username;
-    // console.log($rootScope.loggedUser.username);
     $scope.gweets = $firebaseArray($rootScope.fbGweets);
-    var query = $rootScope.fbGweets.limitToLast(20);
-    $scope.recentGweets = $firebaseArray(query);
-    $scope.gweetArr = $scope.recentGweets;
+    // var query = $rootScope.fbGweets.limitToLast(20);
+    // $scope.recentGweets = $firebaseArray(query);
+    // $scope.gweetArr = $scope.recentGweets;
+    // $scope.gweetArr = $scope.gweets;
+    var query = $rootScope.fbGweets.orderByChild("id").equalTo($rootScope.uid);
+    $scope.gweetArr = $firebaseArray(query);
 
     $scope.remainingChar = function() {
       if ($scope.gweet === undefined) {
