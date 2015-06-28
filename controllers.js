@@ -33,37 +33,14 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     $scope.gweetObj = {};
     var currentUser = $rootScope.loggedUser.username;
     $scope.gweets = $firebaseArray($rootScope.fbGweets);
-    $scope.followers = $firebaseArray($rootScope.fbFollowers);
-
-    var followers = $rootScope.fbRef.child('/followers');
-    var fbFollowers = $firebaseArray(followers);
-    $scope.followers = fbFollowers;
-
-
 
     $scope.isFollowing = function(index) {
-      var query = $rootScope.fbFollowers.orderByChild("user").equalTo($rootScope.uid);
-      $scope.followArr = $firebaseArray(query);
-
-      // for (var i = 0; i < $scope.followArr.length; i++) {
-      //   console.log($scope.followArr.$keyAt(i));
-      // }
-      // console.log(query);
-
-      // var followKey = $scope.followerArr.$keyAt(index);
-      // console.log(followKey);
-      // console.log($scope.followers.$keyAt(0));
-
-      // console.log($scope.followArr[0].$id);
-
-      // var arrLength = $scope.gweets.length - 1;
-      // var realIndex = arrLength - index;
-      // var key = $scope.gweets.$keyAt(realIndex);
-      // var clickedGweet = $scope.gweets.$getRecord(key);
-      // $scope.followers.$add({
-      //   user: $rootScope.uid,
-      //   following: clickedGweet.id
-      // });
+      var arrLength = $scope.gweets.length - 1;
+      var realIndex = arrLength - index;
+      var key = $scope.gweets.$keyAt(realIndex);
+      var clickedGweet = $scope.gweets.$getRecord(key);
+      $rootScope.loggedUser.following = $rootScope.loggedUser.following || [];
+      $rootScope.loggedUser.following.push(clickedGweet.id);
     };
 
     $scope.remainingChar = function() {
@@ -93,7 +70,6 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
   .controller('ProfileCtrl', function($scope, User, Gweet, $rootScope, $firebaseObject, $firebaseArray) {
     $scope.gweetArr = [];
     $scope.gweetObj = {};
-    var currentUser = $rootScope.loggedUser.username;
     var query = $rootScope.fbGweets.orderByChild("id").equalTo($rootScope.uid);
     $scope.gweetArr = $firebaseArray(query);
 
