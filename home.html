@@ -10,10 +10,9 @@
   </div>
   <br>
 </form>
-<p ng-repeat='fuck in fuckface'>{{fuck}}</p>
-<div class="gweets" ng-repeat="obj in gweets.slice().reverse() track by $index">
+<div class="gweets" ng-repeat="obj in gweets | orderBy : 'dateCreated' : true track by $index ">
   <p><span id="username-gweetbox">{{obj.username}}:</span>
-    <button id="follow-btn" type="submit" ng-click="isFollowing($index)" class="btn btn-default">follow</button>
+    <button id="follow-btn" type="submit" ng-disable="" ng-click="follow($index)" class="btn btn-default">follow</button>
     <div id="gweet-gweetbox"> {{obj.gweet}}</div>
   </p>
 </div>

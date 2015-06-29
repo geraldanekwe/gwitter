@@ -31,16 +31,21 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
   .controller('HomeCtrl', function($scope, User, Gweet, $rootScope, $firebaseObject, $firebaseArray) {
     $scope.gweetArr = [];
     $scope.gweetObj = {};
-    var currentUser = $rootScope.loggedUser.username;
-    $scope.gweets = $firebaseArray($rootScope.fbGweets);
+    $scope.gweets = Gweet.getGweets();
 
-    $scope.isFollowing = function(index) {
+    $scope.addGweet = function() {
+      $scope.gweetObj.username = $rootScope.loggedUser.username;
+      $scope.gweetObj.gweet = $scope.gweet;
+      Gweet.addGweet($scope.gweetObj);
+      $scope.gweet = "";
+    };
+
+    $scope.follow = function(index) {
       var arrLength = $scope.gweets.length - 1;
       var realIndex = arrLength - index;
       var key = $scope.gweets.$keyAt(realIndex);
       var clickedGweet = $scope.gweets.$getRecord(key);
-      $rootScope.loggedUser.following = $rootScope.loggedUser.following || [];
-      $rootScope.loggedUser.following.push(clickedGweet.id);
+      Gweet.follow($rootScope.loggedUser, clickedGweet.id);
     };
 
     $scope.remainingChar = function() {
@@ -52,19 +57,6 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
 
     $scope.isGweetMaxed = function() {
       return $scope.remainingChar() < 0 || false;
-    };
-
-    $scope.addGweet = function() {
-      $scope.gweetObj = {};
-      $scope.gweetObj.username = currentUser;
-      $scope.gweetObj.gweet = $scope.gweet;
-      $rootScope.fbGweets = $rootScope.fbRef.child('gweets/' + $rootScope.uid);
-      $scope.gweets.$add({
-        username: currentUser,
-        gweet: $scope.gweetObj.gweet,
-        id: $rootScope.uid
-      });
-      $scope.gweet = "";
     };
   })
   .controller('ProfileCtrl', function($scope, User, Gweet, $rootScope, $firebaseObject, $firebaseArray) {
@@ -85,15 +77,9 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     };
 
     $scope.addGweet = function() {
-      $scope.gweetObj = {};
-      $scope.gweetObj.username = currentUser;
+      $scope.gweetObj.username = $rootScope.loggedUser.username;
       $scope.gweetObj.gweet = $scope.gweet;
-      $rootScope.fbGweets = $rootScope.fbRef.child('gweets/' + $scope.gweetObj.username);
-      $scope.gweets.$add({
-        username: currentUser,
-        gweet: $scope.gweetObj.gweet,
-        id: $rootScope.uid
-      });
+      Gweet.addGweet($scope.gweetObj);
       $scope.gweet = "";
     };
   });

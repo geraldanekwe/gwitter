@@ -13,11 +13,46 @@ app.factory('User', function($rootScope) {
 
     return User;
   })
-  .factory('Gweet', function($rootScope) {
+  .factory('Gweet', function($rootScope, $firebaseArray) {
     function Gweet() {}
+    Gweet.addGweet = function(obj) {
+      $rootScope.fbGweets = $rootScope.fbRef.child('gweets/');
+      var gweets = Gweet.getGweets();
+      gweets.$add({
+        username: obj.username,
+        gweet: obj.gweet,
+        id: $rootScope.uid,
+        dateCreated: Firebase.ServerValue.TIMESTAMP
+      });
+      return false;
+    };
+
+    Gweet.getGweets = function() {
+      return $firebaseArray($rootScope.fbGweets);
+    };
+
+    Gweet.isFollowing = function() {
+
+    };
+
+    Gweet.follow = function(user, userId) {
+      console.log(user);
+      user.following = user.following || [];
+      user.following.push(userId);
+    };
 
     Gweet.maxLength = 140;
 
     return Gweet;
 
   });
+
+
+
+// $rootScope.fbGweets = $rootScope.fbRef.child('gweets/' + $rootScope.uid);
+
+// $scope.gweets.$add({
+//   username: currentUser,
+//   gweet: $scope.gweetObj.gweet,
+//   id: $rootScope.uid
+// });
