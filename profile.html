@@ -12,6 +12,7 @@
 </form>
 <div class="gweets" ng-repeat="obj in gweetArr.slice().reverse()">
   <p><span id="username-gweetbox">{{obj.username}}:</span>
+    <button id="follow-btn" type="submit" ng-disabled="isFollowing(obj)" ng-click="follow($index)" class="btn btn-default">follow</button>
     <div id="gweet-gweetbox"> {{obj.gweet}}</div>
   </p>
 </div>

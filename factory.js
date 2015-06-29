@@ -36,7 +36,6 @@ app.factory('User', function($rootScope) {
     };
 
     Gweet.follow = function(user, userId) {
-      console.log(user);
       user.following = user.following || [];
       user.following.push(userId);
     };
