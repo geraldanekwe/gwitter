@@ -31,7 +31,6 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     };
   })
   .controller('HomeCtrl', function($scope, User, Gweet, $rootScope, $firebaseObject, $firebaseArray) {
-    $scope.gweetArr = [];
     $scope.gweetObj = {};
     $scope.gweets = Gweet.getGweets();
 
@@ -51,7 +50,6 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     };
 
     $scope.isFollowing = function(obj) {
-      // console.log(obj.id);
       if ($rootScope.currentUser.following) {
         var followArr = $rootScope.currentUser.following;
         return followArr.some(function(github) {
@@ -72,8 +70,8 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     };
   })
   .controller('ProfileCtrl', function($scope, User, Gweet, $rootScope, $firebaseObject, $firebaseArray) {
-    $scope.gweetArr = [];
     $scope.gweetObj = {};
+    $scope.gweets = Gweet.getGweets();
 
     $scope.addGweet = function() {
       $scope.gweetObj.username = $rootScope.loggedUser.username;
@@ -90,18 +88,16 @@ app.controller('LoginCtrl', function($scope, User, $rootScope, $firebaseObject, 
     };
 
     $scope.isFollowing = function(obj) {
-      if ($rootScope.currentUser.following) {
-        var followArr = $rootScope.currentUser.following;
-        console.log(followArr);
+      var followArr = $rootScope.currentUser.following;
+      if ($rootScope.uid === obj.id) {
+        return true;
+      } else if ($rootScope.currentUser.following) {
+        $scope.following = followArr.length;
         return followArr.some(function(github) {
           return github === obj.id;
         });
       }
     };
-    var query = $rootScope.fbGweets.orderByChild("id").equalTo($rootScope.uid);
-    var query = $rootScope.fbGweets;
-    $scope.gweetArr = $firebaseArray(query);
-
 
     $scope.isGweetMaxed = function() {
       return $scope.remainingChar() < 0 || false;

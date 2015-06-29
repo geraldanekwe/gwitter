@@ -1,4 +1,5 @@
 <h1>Welcome {{loggedUser.username}} !</h1>
+<h3>following: {{following}}</h3>
 <form class="navbar-form navbar-left" ng-submit="addGweet()">
   <div class="form-group">
     <textarea ng-model="gweet" rows="5" placeholder="gweet here..." required></textarea>
@@ -10,7 +11,7 @@
   </div>
   <br>
 </form>
-<div class="gweets" ng-repeat="obj in gweetArr.slice().reverse()">
+<div class="gweets" ng-if="isFollowing(obj)" ng-repeat="obj in gweets | orderBy : 'dateCreated' : true track by $index ">
   <p><span id="username-gweetbox">{{obj.username}}:</span>
     <button id="follow-btn" type="submit" ng-disabled="isFollowing(obj)" ng-click="follow($index)" class="btn btn-default">follow</button>
     <div id="gweet-gweetbox"> {{obj.gweet}}</div>

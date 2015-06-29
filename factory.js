@@ -45,13 +45,3 @@ app.factory('User', function($rootScope) {
     return Gweet;
 
   });
-
-
-
-// $rootScope.fbGweets = $rootScope.fbRef.child('gweets/' + $rootScope.uid);
-
-// $scope.gweets.$add({
-//   username: currentUser,
-//   gweet: $scope.gweetObj.gweet,
-//   id: $rootScope.uid
-// });
